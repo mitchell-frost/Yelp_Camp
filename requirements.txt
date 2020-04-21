@@ -1,0 +1,5 @@
+Install Node
+  The application starts wil node.js
+Install MongoDB
+  The database starts with mongod. To make any changes to the database, we have to start the server. 
+  For example, changes like sign in or sign up need the server to be started.
