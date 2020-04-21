@@ -1,48 +1,14 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+var express        = require("express"),
+    app            = express(),
+    bodyParser     = require("body-parser"),
+    mongoose       = require("mongoose"),
+    Campground     = require("./models/campgrounds"),
+    seedDB         = require("./seeds"); 
 
-mongoose.connect("mongodb://localhost/yelp_camp", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://localhost/yelp_camp_v3", { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
-
-//SCHEMA SETUP
-var campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String,
-});
-
-var Campground = mongoose.model("Campground", campgroundSchema);
-
- /* Campground.create({
-    name: "Magic Moments", 
-    image:"https://cdn.pixabay.com/photo/2020/02/04/10/42/camping-4817872__340.jpg",
-    description: "Nasha bohot hota hai. Mahadev dikh jaate hain."
-}, function(err, campground){
-    if(err){
-        console.log(err);
-    } else {
-        console.log("NEWLY CREATED CAMPGROUND: ");
-        console.log(campground);
-    }
-}); */
-
-/* var campgrounds = [
-    {name: "Salmon Creek", image:"https://cdn.pixabay.com/photo/2020/02/15/00/33/yoga-4849683__340.jpg"},
-    {name: "Magic Moments", image:"https://cdn.pixabay.com/photo/2020/02/04/10/42/camping-4817872__340.jpg"},
-    {name: "Old Monk", image:"https://cdn.pixabay.com/photo/2019/10/03/11/14/camp-4522970__340.jpg"},
-    {name: "Salmon Creek", image:"https://cdn.pixabay.com/photo/2020/03/13/20/06/namibia-4929027__340.jpg"},
-    {name: "Magic Moments", image:"https://cdn.pixabay.com/photo/2020/02/04/10/42/camping-4817872__340.jpg"},
-    {name: "Old Monk", image:"https://cdn.pixabay.com/photo/2019/10/03/11/14/camp-4522970__340.jpg"},
-    {name: "Salmon Creek", image:"https://cdn.pixabay.com/photo/2020/03/10/09/04/flower-4918361__340.jpg"},
-    {name: "Magic Moments", image:"https://cdn.pixabay.com/photo/2020/02/04/10/42/camping-4817872__340.jpg"},
-    {name: "Old Monk", image:"https://cdn.pixabay.com/photo/2019/10/03/11/14/camp-4522970__340.jpg"},
-    {name: "Salmon Creek", image:"https://pixabay.com/photos/tent-camp-night-star-camping-548022/"},
-    {name: "Magic Moments", image:"https://cdn.pixabay.com/photo/2020/02/04/10/42/camping-4817872__340.jpg"},
-    {name: "Old Monk", image:"https://cdn.pixabay.com/photo/2019/10/03/11/14/camp-4522970__340.jpg"}
-] */ 
+seedDB();
 
 app.get("/", function(req, res){
     res.render("landing");
@@ -75,17 +41,20 @@ app.post("/campgrounds", function(req, res){
     //redirect back to the campgrounds page with the new one added
 });
 
+// Add a new campground
 app.get("/campgrounds/new", function(req, res){
     res.render("new.ejs");
     
 });  
 
+// SHOW - shows more info about any campground
 app.get("/campgrounds/:id", function(req, res){
     //res.render("show");
-    Campground.findById(req.params.id, function(err, foundCampground){
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
         if(err) {
             console.log(err);
         } else {
+            console.log(foundCampground);
             res.render("show", {campground: foundCampground});
         }
     });
