@@ -81,6 +81,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, function(req, res){
         if(err){
             res.redirect("/campgrounds");
         } else {
+            req.flash("success", "Campground updated successfully");
             res.redirect("/campgrounds");
         }
     });
