@@ -3,12 +3,14 @@ var express        = require("express"),
     bodyParser     = require("body-parser"),
     mongoose       = require("mongoose"),
     Campground     = require("./models/campgrounds"),
-    seedDB         = require("./seeds");
-    Comment        = require("./models/comment");
+    seedDB         = require("./seeds"),
+    Comment        = require("./models/comment"),
+    path           = require("path");
 
-mongoose.connect("mongodb://localhost/yelp_camp_v4", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://localhost/yelp_camp_v5", { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname + '/public')));
 seedDB();
 
 app.get("/", function(req, res){
@@ -92,7 +94,7 @@ app.post("/campgrounds/:id/comments", function(req, res){
             });
         }
     });
-})
+});
 
 app.listen(3000, process.env.IP, function(){
     console.log("YelpCamp Server has started");
