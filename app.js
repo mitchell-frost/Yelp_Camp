@@ -14,11 +14,11 @@ var CommentRoutes     = require("./routes/comments"),
     CampgroundRoutes  = require("./routes/campgrounds"),
     indexRoutes       = require("./routes/index");
 
-mongoose.connect("mongodb://localhost/yelp_camp_v7", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://localhost/yelp_camp_v8", { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname + '/public')));
-seedDB();
+//seedDB(); //do not seed the database
 
 //  PASSPORT CONFIGURATION
 app.use(require("express-session")({
