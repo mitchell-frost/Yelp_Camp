@@ -39,3 +39,20 @@ When all the above is installed properly, you can start the server with the foll
 ```
 node app.js
 ```
+Once the server has started, you can open the following link and voila! There's your app!
+
+For Windows,
+```
+ http://localhost:3000
+```
+
+
+For Linux,
+```
+ http://127.0.0.1:3000
+```
+
+## Acknowledgments
+
+* This is a project from the course Web Developer Bootcamp on Udemy by Colt Steele
+* Contributions and suggestions are welcome
